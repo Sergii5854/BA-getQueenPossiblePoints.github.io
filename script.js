@@ -1,77 +1,134 @@
 window.onload = function () {
 
-    function decToHex(n) {
+    function getQueenPossiblePoints(x, y) {
+        var min = 1
+        var max = 8
+        var arr = []
+        var obstructions = [[min-1 , min-1 ], [max+1 , max+1 ]]
 
-        var number = Number(n);
-        if (!!number) return number.toString(16)
-        return false
+        function isObstacle(x, y) {
+            for (let o of obstructions) {
+                if (o[0] === x && o[1] === y) {
+                    // console.log(o[0] + ',' + o[1]);
+                    return true;
+                }
+            }
+        }
+
+        function checkUpLeft(x, y) {
+            if (x >= min && y >= min) {
+                if (isObstacle(x, y)) {
+                    return;
+                } else {
+                    arr.push([x, y])
+                    checkUpLeft(x - 1, y - 1);
+                }
+            }
+        }
+
+        function checkDownLeft(x, y) {
+            if (x >= min && y < max - 1) {
+                if (isObstacle(x, y)) {
+                    return;
+                } else {
+                    arr.push([x, y])
+                    checkDownLeft(x - 1, y + 1);
+                }
+            }
+        }
+
+        function checkDownRight(x, y) {
+            if (x <= max && y <= max) {
+                if (isObstacle(x, y)) {
+                    return;
+                } else {
+                    arr.push([x, y])
+                    checkDownRight(x + 1, y + 1);
+                }
+            }
+        }
+
+        function checkUpRight(x, y) {
+            if (x <= max - 1 && y >= min) {
+                if (isObstacle(x, y)) {
+                    return;
+                } else {
+                    arr.push([x, y])
+                    checkUpRight(x + 1, y - 1);
+                }
+            }
+        }
+
+        function checkLeft(x, y) {
+            if (x >= min) {
+
+                if (isObstacle(x, y)) {
+                    return;
+                } else {
+                    arr.push([x, y])
+                    checkLeft(x - 1, y);
+                }
+            }
+        }
+
+
+        function checkRight(x, y) {
+            if (x <= max) {
+                if (isObstacle(x, y)) {
+                    return;
+                } else {
+                    arr.push([x, y])
+                    checkRight(x + 1, y);
+                }
+            }
+        }
+
+        function checkDown(x, y) {
+            if (y <= max) {
+                if (isObstacle(x, y)) {
+                    return;
+                } else {
+                    arr.push([x, y])
+                    checkDown(x, y + 1);
+                }
+            }
+        }
+
+
+        function checkUp(x, y) {
+            if (y >= min) {
+                if (isObstacle(x, y)) {
+                    return;
+                } else {
+                    arr.push([x, y])
+                    checkUp(x, y - 1);
+                }
+            }
+        }
+
+
+        checkUp(x, y - 1);
+        checkRight(x + 1, y);
+        checkDown(x, y + 1);
+        checkLeft(x - 1, y);
+
+        checkUpLeft(x - 1, y - 1);
+        checkUpRight(x + 1, y - 1);
+        checkDownLeft(x - 1, y + 1);
+        checkDownRight(x + 1, y + 1);
+
+
+        return arr;
+
+
     }
 
 
-    function decToBin(n) {
-        var number = Number(n);
-        if (!!number) return number.toString(2)
-        return false
-    }
+    console.log('getQueenPossiblePoints(1, 1) =>', getQueenPossiblePoints(1, 1))
+    console.log('getQueenPossiblePoints(4, 3) =>', getQueenPossiblePoints(4, 3))
+    console.log('getQueenPossiblePoints(8, 8) =>', getQueenPossiblePoints(8, 8))
+    console.log('getQueenPossiblePoints(3, 3) =>', getQueenPossiblePoints(3, 3))
+    console.log('getQueenPossiblePoints(4, 5) =>', getQueenPossiblePoints(4, 5))
+    console.log('getQueenPossiblePoints(5, 5) =>', getQueenPossiblePoints(5, 5))
 
-    function hexToBin(n) {
-
-        var isHex = parseInt(n, 16);
-        if ((isHex.toString(16) === n)) return parseInt(n, 16).toString(2);
-
-        return false
-    }
-
-    function binToHex(n) {
-        var isBin = parseInt(n, 2);
-        if ((isBin.toString(2) === n)) return parseInt(n, 2).toString(16);
-
-        return false
-    }
-
-
-    console.group('decToHex');
-    console.log('`12` => ', decToHex('12'))
-    console.log('`text` => ', decToHex('text'))
-    console.log('`12 text` => ', decToHex('12 text'))
-    console.log('111 => ', decToHex(111))
-    console.log( 'undefined => ', decToHex(undefined))
-    console.log('NaN => ', decToHex(NaN))
-    console.log('`1111111` =>', decToHex('1111111'))
-    console.groupEnd();
-
-
-    console.group('decToBin');
-    console.log('`12` => ', decToBin('12'))
-    console.log('`text` => ', decToBin('text'))
-    console.log('`12 text` => ', decToBin('12 text'))
-    console.log('111 => ', decToBin(111))
-    console.log( 'undefined => ', decToBin(undefined))
-    console.log('NaN => ', decToBin(NaN))
-    console.log('`1111111` =>', decToBin('1111111'))
-    console.groupEnd();
-
-    console.group('hexToBin');
-    console.log('`1` => ', hexToBin('1'))
-    console.log('`12` => ', hexToBin('12'))
-    console.log('`7f` => ', hexToBin('7f'))
-    console.log('`text` => ', hexToBin('text'))
-    console.log('`12 text` => ', hexToBin('12 text'))
-    console.log('111 => ', hexToBin(111))
-    console.log( 'undefined => ', hexToBin(undefined))
-    console.log('NaN => ', hexToBin(NaN))
-    console.log('`1111111` =>', hexToBin('1111111'))
-    console.groupEnd();
-
-    console.group('binToHex');
-    console.log('`12` => ', binToHex('12'))
-    console.log('`101` => ', binToHex('101'))
-    console.log('`1111111` => ', binToHex('1111111'))
-    console.log('`text` => ', binToHex('text'))
-    console.log('`12 text` => ', binToHex('12 text'))
-    console.log('111 => ', binToHex(111))
-    console.log( 'undefined => ', binToHex(undefined))
-    console.log('NaN => ', binToHex(NaN))
-    console.log('`1111111` =>', binToHex('1111111'))
-    console.groupEnd();
 };
